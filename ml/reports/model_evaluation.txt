@@ -1,0 +1,20 @@
+MODEL EVALUATION
+
+Random Forest
+Accuracy: 1.0000
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+Naive Bayes
+Accuracy: 0.9672
+Precision: 0.9617
+Recall: 0.9672
+F1-score: 0.9596
+
+Decision Tree
+Accuracy: 0.6557
+Precision: 0.6878
+Recall: 0.6557
+F1-score: 0.6430
+

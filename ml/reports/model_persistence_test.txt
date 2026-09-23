@@ -1,0 +1,8 @@
+Testing input symptoms: ['fever', 'cough', 'headache']
+
+Possible conditions identified by the model:
+(Note: This is not a medical diagnosis.)
+
+1. Paralysis (brain hemorrhage) — 26.00%
+2. Bronchial Asthma — 15.00%
+3. Hypertension — 11.00%

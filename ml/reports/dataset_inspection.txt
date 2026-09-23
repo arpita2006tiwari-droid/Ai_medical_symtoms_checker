@@ -1,0 +1,34 @@
+## Main dataset
+File: dataset.csv
+Rows: 4920
+Columns: 18
+Target: Disease
+Number of conditions: 41
+Number of symptom columns: 17
+Number of unique symptoms: 131
+Missing values: 46992
+Duplicate rows: 4616
+
+## Description dataset
+Rows: 41
+Columns: 2
+Number of conditions: 41
+Missing values: 0
+
+## Precaution dataset
+Rows: 41
+Columns: 5
+Number of conditions: 41
+Missing values: 2
+
+## Severity dataset
+Rows: 133
+Columns: 2
+Number of symptoms: 132
+Missing values: 0
+Severity range: 1 to 7
+
+## Disease Name Matches
+Diseases in main but missing in description: 1
+Examples: ['Dimorphic hemmorhoids(piles)']
+Diseases in main but missing in precaution: 0
