@@ -64,7 +64,7 @@ def predict_conditions(user_symptoms):
 if __name__ == "__main__":
     # Persistence and prediction test
     test_symptoms = [
-        "fever",
+        "high fever",
         "cough",
         "headache"
     ]

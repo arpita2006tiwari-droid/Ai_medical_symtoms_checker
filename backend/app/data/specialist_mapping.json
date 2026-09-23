@@ -1,0 +1,209 @@
+{
+  "mappings": [
+    {
+      "condition": "Fungal infection",
+      "specialist": "Dermatologist",
+      "reason": "The preliminary condition information suggests a skin-related issue, which may be appropriate for evaluation by a Dermatologist."
+    },
+    {
+      "condition": "Allergy",
+      "specialist": "Allergist",
+      "reason": "The preliminary condition information suggests an allergic reaction, which may be appropriate for evaluation by an Allergist or Immunologist."
+    },
+    {
+      "condition": "GERD",
+      "specialist": "Gastroenterologist",
+      "reason": "The preliminary condition information suggests a gastrointestinal issue, which may be appropriate for evaluation by a Gastroenterologist."
+    },
+    {
+      "condition": "Chronic cholestasis",
+      "specialist": "Gastroenterologist",
+      "reason": "The preliminary condition information suggests a liver or biliary issue, which may be appropriate for evaluation by a Gastroenterologist or Hepatologist."
+    },
+    {
+      "condition": "Drug Reaction",
+      "specialist": "Dermatologist",
+      "reason": "The preliminary condition information suggests a skin-related reaction, which may be appropriate for evaluation by a Dermatologist or Allergist."
+    },
+    {
+      "condition": "Peptic ulcer diseae",
+      "specialist": "Gastroenterologist",
+      "reason": "The preliminary condition information suggests a gastrointestinal issue, which may be appropriate for evaluation by a Gastroenterologist."
+    },
+    {
+      "condition": "AIDS",
+      "specialist": "Infectious Disease Specialist",
+      "reason": "The preliminary condition information suggests a complex infectious disease, which may be appropriate for evaluation by an Infectious Disease Specialist."
+    },
+    {
+      "condition": "Diabetes ",
+      "specialist": "Endocrinologist",
+      "reason": "The preliminary condition information suggests a metabolic or endocrine issue, which may be appropriate for evaluation by an Endocrinologist."
+    },
+    {
+      "condition": "Gastroenteritis",
+      "specialist": "Gastroenterologist",
+      "reason": "The preliminary condition information suggests a gastrointestinal issue, which may be appropriate for evaluation by a Gastroenterologist."
+    },
+    {
+      "condition": "Bronchial Asthma",
+      "specialist": "Pulmonologist",
+      "reason": "The preliminary condition information suggests a respiratory issue, which may be appropriate for evaluation by a Pulmonologist."
+    },
+    {
+      "condition": "Hypertension ",
+      "specialist": "Cardiologist",
+      "reason": "The preliminary condition information suggests a cardiovascular issue, which may be appropriate for evaluation by a Cardiologist."
+    },
+    {
+      "condition": "Migraine",
+      "specialist": "Neurologist",
+      "reason": "The preliminary condition information suggests a neurological issue, which may be appropriate for evaluation by a Neurologist."
+    },
+    {
+      "condition": "Cervical spondylosis",
+      "specialist": "Orthopedic Specialist",
+      "reason": "The preliminary condition information suggests a musculoskeletal issue, which may be appropriate for evaluation by an Orthopedic Specialist or Neurologist."
+    },
+    {
+      "condition": "Paralysis (brain hemorrhage)",
+      "specialist": "Neurologist",
+      "reason": "The preliminary condition information suggests a severe neurological issue, which may be appropriate for evaluation by a Neurologist."
+    },
+    {
+      "condition": "Jaundice",
+      "specialist": "Gastroenterologist",
+      "reason": "The preliminary condition information suggests a liver issue, which may be appropriate for evaluation by a Gastroenterologist or Hepatologist."
+    },
+    {
+      "condition": "Malaria",
+      "specialist": "Infectious Disease Specialist",
+      "reason": "The preliminary condition information suggests a parasitic infection, which may be appropriate for evaluation by an Infectious Disease Specialist."
+    },
+    {
+      "condition": "Chicken pox",
+      "specialist": "General Physician",
+      "reason": "The preliminary condition information suggests a common viral infection, which is typically managed by a General Physician."
+    },
+    {
+      "condition": "Dengue",
+      "specialist": "General Physician",
+      "reason": "The preliminary condition information suggests a viral infection, which is often managed by a General Physician."
+    },
+    {
+      "condition": "Typhoid",
+      "specialist": "General Physician",
+      "reason": "The preliminary condition information suggests a bacterial infection, which is typically managed by a General Physician."
+    },
+    {
+      "condition": "hepatitis A",
+      "specialist": "Gastroenterologist",
+      "reason": "The preliminary condition information suggests a liver infection, which may be appropriate for evaluation by a Gastroenterologist or Hepatologist."
+    },
+    {
+      "condition": "Hepatitis B",
+      "specialist": "Gastroenterologist",
+      "reason": "The preliminary condition information suggests a liver infection, which may be appropriate for evaluation by a Gastroenterologist or Hepatologist."
+    },
+    {
+      "condition": "Hepatitis C",
+      "specialist": "Gastroenterologist",
+      "reason": "The preliminary condition information suggests a liver infection, which may be appropriate for evaluation by a Gastroenterologist or Hepatologist."
+    },
+    {
+      "condition": "Hepatitis D",
+      "specialist": "Gastroenterologist",
+      "reason": "The preliminary condition information suggests a liver infection, which may be appropriate for evaluation by a Gastroenterologist or Hepatologist."
+    },
+    {
+      "condition": "Hepatitis E",
+      "specialist": "Gastroenterologist",
+      "reason": "The preliminary condition information suggests a liver infection, which may be appropriate for evaluation by a Gastroenterologist or Hepatologist."
+    },
+    {
+      "condition": "Alcoholic hepatitis",
+      "specialist": "Gastroenterologist",
+      "reason": "The preliminary condition information suggests a liver issue, which may be appropriate for evaluation by a Gastroenterologist or Hepatologist."
+    },
+    {
+      "condition": "Tuberculosis",
+      "specialist": "Pulmonologist",
+      "reason": "The preliminary condition information suggests a respiratory infection, which may be appropriate for evaluation by a Pulmonologist."
+    },
+    {
+      "condition": "Common Cold",
+      "specialist": "General Physician",
+      "reason": "The preliminary condition information suggests a common viral illness, which is typically managed by a General Physician."
+    },
+    {
+      "condition": "Pneumonia",
+      "specialist": "Pulmonologist",
+      "reason": "The preliminary condition information suggests a lower respiratory infection, which may be appropriate for evaluation by a Pulmonologist."
+    },
+    {
+      "condition": "Dimorphic hemmorhoids(piles)",
+      "specialist": "Gastroenterologist",
+      "reason": "The preliminary condition information suggests a lower gastrointestinal issue, which may be appropriate for evaluation by a Gastroenterologist or Proctologist."
+    },
+    {
+      "condition": "Heart attack",
+      "specialist": "Cardiologist",
+      "reason": "The preliminary condition information suggests a cardiovascular event, which requires evaluation by a Cardiologist."
+    },
+    {
+      "condition": "Varicose veins",
+      "specialist": "Vascular Specialist",
+      "reason": "The preliminary condition information suggests a vascular issue, which may be appropriate for evaluation by a Vascular Specialist."
+    },
+    {
+      "condition": "Hypothyroidism",
+      "specialist": "Endocrinologist",
+      "reason": "The preliminary condition information suggests a thyroid issue, which may be appropriate for evaluation by an Endocrinologist."
+    },
+    {
+      "condition": "Hyperthyroidism",
+      "specialist": "Endocrinologist",
+      "reason": "The preliminary condition information suggests a thyroid issue, which may be appropriate for evaluation by an Endocrinologist."
+    },
+    {
+      "condition": "Hypoglycemia",
+      "specialist": "Endocrinologist",
+      "reason": "The preliminary condition information suggests a metabolic or blood sugar issue, which may be appropriate for evaluation by an Endocrinologist."
+    },
+    {
+      "condition": "Osteoarthristis",
+      "specialist": "Orthopedic Specialist",
+      "reason": "The preliminary condition information suggests a joint or musculoskeletal issue, which may be appropriate for evaluation by an Orthopedic Specialist or Rheumatologist."
+    },
+    {
+      "condition": "Arthritis",
+      "specialist": "Rheumatologist",
+      "reason": "The preliminary condition information suggests an inflammatory joint issue, which may be appropriate for evaluation by a Rheumatologist."
+    },
+    {
+      "condition": "(vertigo) Paroymsal  Positional Vertigo",
+      "specialist": "ENT Specialist",
+      "reason": "The preliminary condition information suggests an inner ear or balance issue, which may be appropriate for evaluation by an ENT Specialist or Neurologist."
+    },
+    {
+      "condition": "Acne",
+      "specialist": "Dermatologist",
+      "reason": "The preliminary condition information suggests a skin-related issue, which may be appropriate for evaluation by a Dermatologist."
+    },
+    {
+      "condition": "Urinary tract infection",
+      "specialist": "Urologist",
+      "reason": "The preliminary condition information suggests a urinary system issue, which may be appropriate for evaluation by a Urologist or General Physician."
+    },
+    {
+      "condition": "Psoriasis",
+      "specialist": "Dermatologist",
+      "reason": "The preliminary condition information suggests a chronic skin issue, which may be appropriate for evaluation by a Dermatologist."
+    },
+    {
+      "condition": "Impetigo",
+      "specialist": "Dermatologist",
+      "reason": "The preliminary condition information suggests a bacterial skin infection, which may be appropriate for evaluation by a Dermatologist."
+    }
+  ]
+}

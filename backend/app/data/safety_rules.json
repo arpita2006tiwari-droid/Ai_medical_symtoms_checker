@@ -1,0 +1,49 @@
+{
+  "rules": [
+    {
+      "id": "SR001",
+      "category": "urgent_attention",
+      "symptoms": ["chest pain", "breathlessness"],
+      "message": "The symptoms provided match a configured high-risk safety indicator for cardiovascular or respiratory issues. Prompt medical attention is recommended. This assessment is informational and is not a diagnosis.",
+      "reason": "Chest pain or breathlessness are critical indicators that may require immediate evaluation.",
+      "source": "Academic Safety Baseline (General Knowledge)",
+      "notes": "Matches if any of the symptoms are present."
+    },
+    {
+      "id": "SR002",
+      "category": "urgent_attention",
+      "symptoms": ["coma", "altered sensorium", "slurred speech"],
+      "message": "The symptoms provided match a configured high-risk safety indicator for neurological issues. Prompt medical attention is recommended. This assessment is informational and is not a diagnosis.",
+      "reason": "Severe neurological signs like slurred speech or altered sensorium can indicate critical conditions.",
+      "source": "Academic Safety Baseline (General Knowledge)",
+      "notes": "Matches if any of the symptoms are present."
+    },
+    {
+      "id": "SR003",
+      "category": "urgent_attention",
+      "symptoms": ["stomach bleeding", "blood in sputum", "bloody stool"],
+      "message": "The symptoms provided match a configured high-risk safety indicator for bleeding. Prompt medical attention is recommended. This assessment is informational and is not a diagnosis.",
+      "reason": "Internal or severe bleeding symptoms can be life-threatening.",
+      "source": "Academic Safety Baseline (General Knowledge)",
+      "notes": "Matches if any of the symptoms are present."
+    },
+    {
+      "id": "SR004",
+      "category": "medical_attention",
+      "symptoms": ["fast heart rate", "palpitations"],
+      "message": "The symptoms provided match a configured safety indicator for medical attention. Consider seeking evaluation from a qualified healthcare professional.",
+      "reason": "Abnormal heart rhythms or rates warrant professional medical checkups.",
+      "source": "Academic Safety Baseline (General Knowledge)",
+      "notes": "Matches if any of the symptoms are present."
+    },
+    {
+      "id": "SR005",
+      "category": "medical_attention",
+      "symptoms": ["loss of balance", "unsteadiness", "blurred and distorted vision", "visual disturbances"],
+      "message": "The symptoms provided match a configured safety indicator for medical attention. Consider seeking evaluation from a qualified healthcare professional.",
+      "reason": "Coordination and vision issues warrant clinical evaluation to rule out systemic causes.",
+      "source": "Academic Safety Baseline (General Knowledge)",
+      "notes": "Matches if any of the symptoms are present."
+    }
+  ]
+}
