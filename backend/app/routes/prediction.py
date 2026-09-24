@@ -11,10 +11,16 @@ from app.services.medical_info_service import medical_info_service
 from app.services.nlp_service import nlp_service
 from app.services.safety_service import safety_service
 from app.services.specialist_service import specialist_service
+from fastapi import Depends
+from sqlalchemy.orm import Session
+from app.db.database import get_db
+from app.db.models.user import User
+from app.db.models.analysis import Analysis
+from app.services.auth_service import get_optional_current_user
 
 router = APIRouter()
 
-def _build_prediction_response(symptoms_list: list[str], input_dict: dict) -> PredictionResponse:
+def _build_prediction_response(symptoms_list: list[str], input_dict: dict, db: Session = None, current_user: User = None, source: str = None) -> PredictionResponse:
     if not ml_service.is_loaded:
         raise HTTPException(
             status_code=503,
@@ -52,6 +58,8 @@ def _build_prediction_response(symptoms_list: list[str], input_dict: dict) -> Pr
         urgency = safety_service.assess(result["recognized_symptoms"])
         
         # Determine Specialist Recommendation based on top prediction
+        
+        # Determine Specialist Recommendation based on top prediction
         top_condition = None
         if enriched_predictions:
             # Predictions are already sorted by model_probability descending
@@ -59,6 +67,25 @@ def _build_prediction_response(symptoms_list: list[str], input_dict: dict) -> Pr
             
         specialist_rec = specialist_service.recommend(top_condition)
         
+        disclaimer_text = "This tool provides preliminary information only and is not a medical diagnosis."
+        
+        # Save to DB if authenticated
+        if current_user and db:
+            analysis_record = Analysis(
+                user_id=current_user.id,
+                input_text=input_dict.get("text") or input_dict.get("message") or ", ".join(input_dict.get("symptoms", [])),
+                recognized_symptoms=result["recognized_symptoms"],
+                unknown_symptoms=result["unknown_symptoms"],
+                predictions=enriched_predictions,
+                symptom_severity=symptom_severities,
+                urgency=urgency.model_dump() if hasattr(urgency, "model_dump") else (urgency if isinstance(urgency, dict) else None),
+                specialist_recommendation=specialist_rec.model_dump() if hasattr(specialist_rec, "model_dump") else (specialist_rec if isinstance(specialist_rec, dict) else None),
+                disclaimer=disclaimer_text,
+                analysis_source=source
+            )
+            db.add(analysis_record)
+            db.commit()
+            
         return PredictionResponse(
             success=True,
             input=input_dict,
@@ -67,15 +94,17 @@ def _build_prediction_response(symptoms_list: list[str], input_dict: dict) -> Pr
             predictions=enriched_predictions,
             symptom_severity=symptom_severities,
             urgency=urgency,
-            specialist_recommendation=specialist_rec
+            specialist_recommendation=specialist_rec,
+            disclaimer=disclaimer_text
         )
     except Exception as e:
+        print(f"Error in predict: {e}")
         raise HTTPException(status_code=500, detail="Internal server error during prediction")
 
 @router.post("/api/predict", response_model=PredictionResponse)
-def predict_symptoms(request: SymptomPredictionRequest):
+def predict_symptoms(request: SymptomPredictionRequest, db: Session = Depends(get_db), current_user: User = Depends(get_optional_current_user)):
     """Phase 2A structured prediction endpoint"""
-    return _build_prediction_response(request.symptoms, {"symptoms": request.symptoms})
+    return _build_prediction_response(request.symptoms, {"symptoms": request.symptoms}, db, current_user, "predict")
 
 @router.post("/api/extract-symptoms", response_model=SymptomExtractionResponse)
 def extract_symptoms_nlp(request: SymptomExtractionRequest):
@@ -88,7 +117,7 @@ def extract_symptoms_nlp(request: SymptomExtractionRequest):
     )
 
 @router.post("/api/analyze", response_model=PredictionResponse)
-def analyze_natural_language(request: NaturalLanguageAnalysisRequest):
+def analyze_natural_language(request: NaturalLanguageAnalysisRequest, db: Session = Depends(get_db), current_user: User = Depends(get_optional_current_user)):
     """Phase 2C end-to-end natural language analysis endpoint"""
     extracted = nlp_service.extract_symptoms(request.text)
     
@@ -98,4 +127,4 @@ def analyze_natural_language(request: NaturalLanguageAnalysisRequest):
             detail="No recognized symptoms found in the text. Please provide valid symptoms."
         )
         
-    return _build_prediction_response(extracted, {"text": request.text})
+    return _build_prediction_response(extracted, {"text": request.text}, db, current_user, "analyze")
