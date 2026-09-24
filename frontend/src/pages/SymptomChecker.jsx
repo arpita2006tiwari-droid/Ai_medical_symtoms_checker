@@ -11,7 +11,7 @@ const SymptomChecker = () => {
   const [step, setStep] = useState('input'); // input -> followup -> analyze
   const [text, setText] = useState('');
   const [extractedSymptoms, setExtractedSymptoms] = useState([]);
-  const [sessionId, setSessionId] = useState(null);
+  const [followupState, setFollowupState] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(null);
   
   const [loading, setLoading] = useState(false);
@@ -39,8 +39,8 @@ const SymptomChecker = () => {
       
       // Try to start followup
       const followupData = await followupApi.startFollowup(recognizedSymptoms);
-      if (followupData.requires_follow_up) {
-        setSessionId(followupData.session_id);
+      if (followupData.complete === false && followupData.question) {
+        setFollowupState(followupData.state);
         setCurrentQuestion(followupData.question);
         setStep('followup');
       } else {
@@ -58,14 +58,14 @@ const SymptomChecker = () => {
     setLoading(true);
     setError('');
     try {
-      const data = await followupApi.answerFollowup(sessionId, answerValue, currentQuestion.question_type);
-      if (data.requires_follow_up) {
+      const data = await followupApi.answerFollowup(followupState, currentQuestion.id, answerValue);
+      if (data.complete === false && data.question) {
+        setFollowupState(data.state);
         setCurrentQuestion(data.question);
         setStep('followup');
       } else {
         // Follow-ups complete, get updated symptoms from session and predict
-        // The API returns updated_symptoms in the response
-        const finalSymptoms = data.updated_symptoms || extractedSymptoms;
+        const finalSymptoms = data.state?.recognized_symptoms || extractedSymptoms;
         handleFinalAnalysis(finalSymptoms);
       }
     } catch (err) {
@@ -146,19 +146,38 @@ const SymptomChecker = () => {
       {step === 'followup' && currentQuestion && (
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8 text-center max-w-2xl mx-auto">
           <ClipboardList className="w-12 h-12 text-teal-600 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-slate-800 mb-6">{currentQuestion.question_text}</h3>
+          <h3 className="text-xl font-bold text-slate-800 mb-6">{currentQuestion.text}</h3>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {currentQuestion.options.map((opt, idx) => (
-              <button
-                key={idx}
-                onClick={() => handleAnswer(opt)}
-                disabled={loading}
-                className="py-3 px-4 border-2 border-slate-200 rounded-lg font-medium text-slate-700 hover:border-teal-500 hover:bg-teal-50 transition-colors"
-              >
-                {opt}
-              </button>
-            ))}
+            {currentQuestion.type === 'yes_no' ? (
+              <>
+                <button
+                  onClick={() => handleAnswer('yes')}
+                  disabled={loading}
+                  className="py-3 px-4 border-2 border-slate-200 rounded-lg font-medium text-slate-700 hover:border-teal-500 hover:bg-teal-50 transition-colors"
+                >
+                  Yes
+                </button>
+                <button
+                  onClick={() => handleAnswer('no')}
+                  disabled={loading}
+                  className="py-3 px-4 border-2 border-slate-200 rounded-lg font-medium text-slate-700 hover:border-teal-500 hover:bg-teal-50 transition-colors"
+                >
+                  No
+                </button>
+              </>
+            ) : (
+              (currentQuestion.options || []).map((opt, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => handleAnswer(opt)}
+                  disabled={loading}
+                  className="py-3 px-4 border-2 border-slate-200 rounded-lg font-medium text-slate-700 hover:border-teal-500 hover:bg-teal-50 transition-colors"
+                >
+                  {opt}
+                </button>
+              ))
+            )}
           </div>
         </div>
       )}

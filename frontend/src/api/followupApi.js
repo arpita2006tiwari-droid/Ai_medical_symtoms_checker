@@ -6,11 +6,11 @@ export const followupApi = {
     return response.data;
   },
 
-  answerFollowup: async (session_id, answer, answer_type) => {
+  answerFollowup: async (state, question_id, answer) => {
     const response = await api.post('/api/follow-up/answer', {
-      session_id,
-      answer,
-      answer_type
+      state,
+      question_id,
+      answer
     });
     return response.data;
   }

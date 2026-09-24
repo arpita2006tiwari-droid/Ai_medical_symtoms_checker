@@ -9,16 +9,15 @@ import { ShieldAlert, Stethoscope, Phone, AlertTriangle, CheckCircle, Activity, 
 
 const UrgencyBadge = ({ urgency }) => {
   const urgencyMap = {
-    'EMERGENCY': { color: 'bg-red-100 text-red-800 border-red-300', icon: <ShieldAlert className="w-5 h-5"/> },
-    'HIGH': { color: 'bg-orange-100 text-orange-800 border-orange-300', icon: <AlertTriangle className="w-5 h-5"/> },
-    'MEDIUM': { color: 'bg-yellow-100 text-yellow-800 border-yellow-300', icon: <Activity className="w-5 h-5"/> },
-    'LOW': { color: 'bg-green-100 text-green-800 border-green-300', icon: <CheckCircle className="w-5 h-5"/> }
+    'urgent_attention': { label: 'URGENT ATTENTION', color: 'bg-red-100 text-red-800 border-red-300', icon: <ShieldAlert className="w-5 h-5"/> },
+    'medical_attention': { label: 'MEDICAL ATTENTION', color: 'bg-yellow-100 text-yellow-800 border-yellow-300', icon: <AlertTriangle className="w-5 h-5"/> },
+    'routine': { label: 'ROUTINE', color: 'bg-green-100 text-green-800 border-green-300', icon: <CheckCircle className="w-5 h-5"/> }
   };
-  const ui = urgencyMap[urgency] || urgencyMap['MEDIUM'];
+  const ui = urgencyMap[urgency] || urgencyMap['routine'];
   
   return (
     <div className={`flex items-center gap-2 px-4 py-2 rounded-full border ${ui.color} font-bold text-lg`}>
-      {ui.icon} {urgency} URGENCY
+      {ui.icon} {ui.label}
     </div>
   );
 };
@@ -57,7 +56,7 @@ const AnalysisResult = () => {
   if (error) return <div className="py-20 max-w-lg mx-auto"><ErrorMessage message={error} /></div>;
   if (!analysis) return null;
 
-  const safety = analysis.safety_classification || {};
+  const urgency = analysis.urgency || {};
   const predictions = analysis.predictions || [];
   const specialist = analysis.specialist_recommendation || {};
 
@@ -70,7 +69,7 @@ const AnalysisResult = () => {
     <div className="max-w-5xl mx-auto px-4 py-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <h1 className="text-3xl font-extrabold text-slate-900">Analysis Results</h1>
-        {safety.urgency_level && <UrgencyBadge urgency={safety.urgency_level} />}
+        {urgency.level && <UrgencyBadge urgency={urgency.level} />}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -79,19 +78,20 @@ const AnalysisResult = () => {
         <div className="lg:col-span-2 space-y-6">
           
           {/* Action Required */}
-          {safety.action_required && (
-            <div className={`p-6 rounded-xl border ${safety.urgency_level === 'EMERGENCY' ? 'bg-red-50 border-red-200' : 'bg-slate-50 border-slate-200'}`}>
-              <h3 className={`text-xl font-bold mb-2 ${safety.urgency_level === 'EMERGENCY' ? 'text-red-800' : 'text-slate-800'}`}>
-                Recommended Action
+          {/* Action Required */}
+          {urgency.message && (
+            <div className={`p-6 rounded-xl border ${urgency.level === 'urgent_attention' ? 'bg-red-50 border-red-200' : urgency.level === 'medical_attention' ? 'bg-yellow-50 border-yellow-200' : 'bg-green-50 border-green-200'}`}>
+              <h3 className={`text-xl font-bold mb-2 ${urgency.level === 'urgent_attention' ? 'text-red-800' : urgency.level === 'medical_attention' ? 'text-yellow-800' : 'text-green-800'}`}>
+                Urgency Assessment
               </h3>
-              <p className={safety.urgency_level === 'EMERGENCY' ? 'text-red-700 font-medium' : 'text-slate-600'}>
-                {safety.action_required}
+              <p className={urgency.level === 'urgent_attention' ? 'text-red-700 font-medium' : urgency.level === 'medical_attention' ? 'text-yellow-700 font-medium' : 'text-green-700'}>
+                {urgency.message}
               </p>
-              {safety.red_flags?.length > 0 && (
+              {urgency.matched_rules && urgency.matched_rules.length > 0 && (
                 <div className="mt-4">
-                  <h4 className="font-semibold text-sm text-red-800 uppercase tracking-wider mb-2">Red Flags Identified:</h4>
-                  <ul className="list-disc pl-5 text-red-700 text-sm">
-                    {safety.red_flags.map((flag, i) => <li key={i}>{flag}</li>)}
+                  <h4 className={`font-semibold text-sm uppercase tracking-wider mb-2 ${urgency.level === 'urgent_attention' ? 'text-red-800' : 'text-yellow-800'}`}>Matched Rules:</h4>
+                  <ul className={`list-disc pl-5 text-sm ${urgency.level === 'urgent_attention' ? 'text-red-700' : 'text-yellow-700'}`}>
+                    {urgency.matched_rules.map((rule, i) => <li key={i}>{rule.reason}</li>)}
                   </ul>
                 </div>
               )}
@@ -111,16 +111,22 @@ const AnalysisResult = () => {
                   <div className="flex justify-between items-start mb-2">
                     <h4 className="text-xl font-bold text-slate-800">{pred.condition}</h4>
                     <span className="bg-teal-100 text-teal-800 text-xs font-bold px-2.5 py-1 rounded">
-                      {(pred.probability * 100).toFixed(0)}% Match
+                      {Number.isFinite(Number(pred.model_probability))
+                        ? `${(Number(pred.model_probability) * 100).toFixed(0)}% Match`
+                        : 'N/A'}
                     </span>
                   </div>
-                  {pred.medical_info?.overview && (
-                    <p className="text-slate-600 text-sm mb-4">{pred.medical_info.overview}</p>
+                  {pred.description && (
+                    <p className="text-slate-600 text-sm mb-4">{pred.description}</p>
                   )}
-                  {pred.medical_info?.treatments?.length > 0 && (
+                  {pred.precautions?.length > 0 && (
                     <div className="text-sm">
-                      <span className="font-semibold text-slate-700">Common Treatments: </span>
-                      <span className="text-slate-600">{pred.medical_info.treatments.join(', ')}</span>
+                      <span className="font-semibold text-slate-700">General Precautions</span>
+                      <ul className="list-disc pl-5 mt-1 text-slate-600 space-y-1">
+                        {pred.precautions.map((precaution, idx) => (
+                          <li key={idx}>{precaution}</li>
+                        ))}
+                      </ul>
                     </div>
                   )}
                 </div>
@@ -145,10 +151,10 @@ const AnalysisResult = () => {
           </div>
 
           {/* Specialist Rec */}
-          {specialist.recommended_specialist && (
+          {specialist.specialist && (
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
               <h3 className="text-lg font-bold text-slate-800 mb-2">Recommended Specialist</h3>
-              <p className="text-teal-700 font-semibold text-xl mb-4">{specialist.recommended_specialist}</p>
+              <p className="text-teal-700 font-semibold text-xl mb-4">{specialist.specialist}</p>
               <p className="text-sm text-slate-600 mb-4">{specialist.reason}</p>
               
               {specialist.providers && specialist.providers.length > 0 && (
