@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-from app.routes import health, prediction, followup, providers, chat, auth, history, conversations
+from app.routes import health, prediction, followup, providers, chat, auth, history, conversations, pain_assessment, menstruation, mood, images, reports, consultation
 from app.services.medical_info_service import medical_info_service
 from app.services.nlp_service import nlp_service
 from app.services.followup_service import followup_service
@@ -28,8 +28,10 @@ app = FastAPI(
 
 # Configure CORS for potential frontend integrations
 origins = [
-    "http://localhost:3000",
+    "http://localhost:5176",
+    "http://127.0.0.1:5176",
     "http://localhost:5173",
+    "http://localhost:3000",
 ]
 
 app.add_middleware(
@@ -49,3 +51,9 @@ app.include_router(chat.router)
 app.include_router(auth.router)
 app.include_router(history.router)
 app.include_router(conversations.router)
+app.include_router(pain_assessment.router)
+app.include_router(menstruation.router)
+app.include_router(mood.router)
+app.include_router(images.router)
+app.include_router(reports.router)
+app.include_router(consultation.router)

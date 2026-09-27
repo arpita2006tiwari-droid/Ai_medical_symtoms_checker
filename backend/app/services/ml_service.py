@@ -65,22 +65,25 @@ class MLService:
 
         # Create feature vector matching EXACT vocabulary ordering
         X = pd.DataFrame(0, index=[0], columns=self.vocabulary)
+        has_features = False
         for sym in normalized_input:
             if sym in self.vocabulary:
                 X.at[0, sym] = 1
+                has_features = True
 
-        # Predict
-        probabilities = self.model.predict_proba(X)[0]
-        
-        # Get top 3 predictions
-        top_3_idx = np.argsort(probabilities)[-3:][::-1]
-        
         predictions = []
-        for idx in top_3_idx:
-            predictions.append({
-                "condition": str(self.classes[idx]),
-                "model_probability": float(probabilities[idx])
-            })
+        if has_features:
+            # Predict
+            probabilities = self.model.predict_proba(X)[0]
+            
+            # Get top 3 predictions
+            top_3_idx = np.argsort(probabilities)[-3:][::-1]
+            
+            for idx in top_3_idx:
+                predictions.append({
+                    "condition": str(self.classes[idx]),
+                    "model_probability": float(probabilities[idx])
+                })
 
         return {
             "recognized_symptoms": recognized_symptoms,

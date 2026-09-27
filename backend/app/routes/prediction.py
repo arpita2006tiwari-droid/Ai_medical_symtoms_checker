@@ -4,7 +4,8 @@ from app.schemas import (
     PredictionResponse,
     SymptomExtractionRequest,
     SymptomExtractionResponse,
-    NaturalLanguageAnalysisRequest
+    NaturalLanguageAnalysisRequest,
+    ModelMetadataResponse
 )
 from app.services.ml_service import ml_service
 from app.services.medical_info_service import medical_info_service
@@ -20,7 +21,21 @@ from app.services.auth_service import get_optional_current_user
 
 router = APIRouter()
 
-def _build_prediction_response(symptoms_list: list[str], input_dict: dict, db: Session = None, current_user: User = None, source: str = None) -> PredictionResponse:
+def is_newborn_or_infant(demographics: dict = None) -> bool:
+    if not demographics:
+        return False
+    if demographics.get("patient_type") == "newborn":
+        return True
+    age = demographics.get("age")
+    age_unit = demographics.get("age_unit")
+    if age is not None and age_unit:
+        if age_unit in ["days", "weeks", "months"]:
+            return True
+        if age_unit == "years" and age < 2:
+            return True
+    return False
+
+def _build_prediction_response(symptoms_list: list[str], input_dict: dict, db: Session = None, current_user: User = None, source: str = None, demographics: dict = None) -> PredictionResponse:
     if not ml_service.is_loaded:
         raise HTTPException(
             status_code=503,
@@ -28,46 +43,68 @@ def _build_prediction_response(symptoms_list: list[str], input_dict: dict, db: S
         )
         
     try:
-        result = ml_service.predict(symptoms_list)
+        is_infant = is_newborn_or_infant(demographics)
         
-        # Enrich predictions with descriptions and precautions
-        enriched_predictions = []
-        for pred in result["predictions"]:
-            condition = pred["condition"]
-            desc = medical_info_service.get_description(condition)
-            precs = medical_info_service.get_precautions(condition)
+        if is_infant:
+            result = {
+                "recognized_symptoms": symptoms_list,
+                "unknown_symptoms": [],
+                "predictions": []
+            }
+            enriched_predictions = []
+            symptom_severities = []
+            for sym in result["recognized_symptoms"]:
+                sev = medical_info_service.get_severity(sym)
+                if sev is not None:
+                    symptom_severities.append({"symptom": sym, "severity": sev})
             
-            enriched_predictions.append({
-                "condition": condition,
-                "model_probability": pred["model_probability"],
-                "description": desc,
-                "precautions": precs
-            })
+            urgency = safety_service.assess(result["recognized_symptoms"])
             
-        # Get severities for recognized symptoms
-        symptom_severities = []
-        for sym in result["recognized_symptoms"]:
-            sev = medical_info_service.get_severity(sym)
-            if sev is not None:
-                symptom_severities.append({
-                    "symptom": sym,
-                    "severity": sev
+            from app.schemas import SpecialistRecommendation
+            specialist_rec = SpecialistRecommendation(
+                specialist="Pediatrician",
+                reason="Patient is a newborn or infant",
+                basis="Demographics",
+                condition="Infant Symptom Assessment"
+            )
+            disclaimer_text = "This tool provides preliminary information only and is not a medical diagnosis. Our AI model is not designed for newborns or infants under 2 years old. Please consult a pediatrician or seek immediate medical care for any concerning symptoms in infants."
+        else:
+            result = ml_service.predict(symptoms_list)
+            
+            # Enrich predictions with descriptions and precautions
+            enriched_predictions = []
+            for pred in result["predictions"]:
+                condition = pred["condition"]
+                desc = medical_info_service.get_description(condition)
+                precs = medical_info_service.get_precautions(condition)
+                
+                enriched_predictions.append({
+                    "condition": condition,
+                    "model_probability": pred["model_probability"],
+                    "description": desc,
+                    "precautions": precs
                 })
                 
-        # Perform Safety Assessment
-        urgency = safety_service.assess(result["recognized_symptoms"])
-        
-        # Determine Specialist Recommendation based on top prediction
-        
-        # Determine Specialist Recommendation based on top prediction
-        top_condition = None
-        if enriched_predictions:
-            # Predictions are already sorted by model_probability descending
-            top_condition = enriched_predictions[0]["condition"]
+            # Get severities for recognized symptoms
+            symptom_severities = []
+            for sym in result["recognized_symptoms"]:
+                sev = medical_info_service.get_severity(sym)
+                if sev is not None:
+                    symptom_severities.append({
+                        "symptom": sym,
+                        "severity": sev
+                    })
+                    
+            # Perform Safety Assessment
+            urgency = safety_service.assess(result["recognized_symptoms"])
             
-        specialist_rec = specialist_service.recommend(top_condition)
-        
-        disclaimer_text = "This tool provides preliminary information only and is not a medical diagnosis."
+            # Determine Specialist Recommendation based on top prediction
+            top_condition = None
+            if enriched_predictions:
+                top_condition = enriched_predictions[0]["condition"]
+                
+            specialist_rec = specialist_service.recommend(top_condition)
+            disclaimer_text = "This tool provides preliminary information only and is not a medical diagnosis."
         
         # Save to DB if authenticated
         if current_user and db:
@@ -81,7 +118,8 @@ def _build_prediction_response(symptoms_list: list[str], input_dict: dict, db: S
                 urgency=urgency.model_dump() if hasattr(urgency, "model_dump") else (urgency if isinstance(urgency, dict) else None),
                 specialist_recommendation=specialist_rec.model_dump() if hasattr(specialist_rec, "model_dump") else (specialist_rec if isinstance(specialist_rec, dict) else None),
                 disclaimer=disclaimer_text,
-                analysis_source=source
+                analysis_source=source,
+                demographics=demographics
             )
             db.add(analysis_record)
             db.commit()
@@ -104,15 +142,18 @@ def _build_prediction_response(symptoms_list: list[str], input_dict: dict, db: S
 @router.post("/api/predict", response_model=PredictionResponse)
 def predict_symptoms(request: SymptomPredictionRequest, db: Session = Depends(get_db), current_user: User = Depends(get_optional_current_user)):
     """Phase 2A structured prediction endpoint"""
-    return _build_prediction_response(request.symptoms, {"symptoms": request.symptoms}, db, current_user, "predict")
+    demographics = {"age": request.age, "age_unit": request.age_unit, "gender": request.gender, "patient_type": request.patient_type} if request.age or request.gender or request.patient_type else None
+    return _build_prediction_response(request.symptoms, {"symptoms": request.symptoms}, db, current_user, "predict", demographics)
 
 @router.post("/api/extract-symptoms", response_model=SymptomExtractionResponse)
 def extract_symptoms_nlp(request: SymptomExtractionRequest):
     """Phase 2C NLP extraction testing endpoint"""
-    extracted = nlp_service.extract_symptoms(request.text)
+    detailed = nlp_service.extract_symptoms_detailed(request.text)
+    extracted = [d["canonical"] for d in detailed]
     return SymptomExtractionResponse(
         input_text=request.text,
         recognized_symptoms=extracted,
+        detailed_symptoms=detailed,
         symptom_count=len(extracted)
     )
 
@@ -127,4 +168,18 @@ def analyze_natural_language(request: NaturalLanguageAnalysisRequest, db: Sessio
             detail="No recognized symptoms found in the text. Please provide valid symptoms."
         )
         
-    return _build_prediction_response(extracted, {"text": request.text}, db, current_user, "analyze")
+    demographics = {"age": request.age, "age_unit": request.age_unit, "gender": request.gender, "patient_type": request.patient_type} if request.age or request.gender or request.patient_type else None
+    return _build_prediction_response(extracted, {"text": request.text}, db, current_user, "analyze", demographics)
+
+@router.get("/api/model-metadata", response_model=ModelMetadataResponse)
+def get_model_metadata():
+    if not ml_service.is_loaded:
+        raise HTTPException(status_code=503, detail="Model not loaded")
+        
+    return ModelMetadataResponse(
+        model_version="0.1.0 (Phase 7 - Ontology Expansion)",
+        total_features=len(ml_service.vocabulary),
+        total_conditions=len(ml_service.classes),
+        supported_features=ml_service.vocabulary,
+        supported_conditions=ml_service.classes
+    )

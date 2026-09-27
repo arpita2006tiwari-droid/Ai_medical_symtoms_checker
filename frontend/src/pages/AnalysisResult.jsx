@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAnalysis } from '../context/AnalysisContext';
+import { useAuth } from '../context/AuthContext';
 import { historyApi } from '../api/historyApi';
 import Disclaimer from '../components/Disclaimer';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -25,6 +26,7 @@ const UrgencyBadge = ({ urgency }) => {
 const AnalysisResult = () => {
   const { id } = useParams();
   const { currentAnalysis } = useAnalysis();
+  const { user } = useAuth();
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -149,6 +151,22 @@ const AnalysisResult = () => {
               Start Chat
             </button>
           </div>
+
+          {/* Guest CTA */}
+          {!user && (
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+              <h3 className="text-lg font-bold text-slate-800 mb-2">Save Your Results</h3>
+              <p className="text-slate-600 text-sm mb-4">Create a free account to save this analysis, track your symptom history, and get personalized insights over time.</p>
+              <div className="flex flex-col gap-2">
+                <button onClick={() => navigate('/register')} className="w-full bg-teal-600 text-white font-bold py-2 rounded-lg hover:bg-teal-700 transition-colors">
+                  Sign Up
+                </button>
+                <button onClick={() => navigate('/login')} className="w-full bg-slate-100 text-slate-700 font-bold py-2 rounded-lg hover:bg-slate-200 transition-colors">
+                  Log In
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Specialist Rec */}
           {specialist.specialist && (

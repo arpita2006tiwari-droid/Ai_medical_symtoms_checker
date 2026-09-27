@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ShieldPlus, Brain, Activity, ArrowRight } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 import Disclaimer from '../components/Disclaimer';
 
 const Home = () => {
+  const { user, loading } = useAuth();
   return (
     <div className="flex flex-col min-h-[calc(100vh-4rem)] bg-slate-50">
       <main className="flex-grow">
@@ -14,13 +16,28 @@ const Home = () => {
           <p className="max-w-2xl mx-auto text-xl text-slate-600 mb-10">
             Describe your symptoms naturally and our AI will extract relevant medical terms, ask dynamic follow-up questions and provide potential conditions and specialist recommendations.
           </p>
-          <div className="flex justify-center gap-4">
-            <Link to="/register" className="inline-flex items-center gap-2 bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors shadow-sm">
-              Get Started <ArrowRight className="w-5 h-5" />
-            </Link>
-            <Link to="/login" className="inline-flex items-center gap-2 bg-white text-slate-700 border border-slate-300 px-6 py-3 rounded-lg font-semibold hover:bg-slate-50 transition-colors shadow-sm">
-              Log In
-            </Link>
+          <div className="flex justify-center gap-4 h-12">
+            {!loading && (
+              user ? (
+                <>
+                  <Link to="/dashboard" className="inline-flex items-center gap-2 bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors shadow-sm">
+                    Go to Dashboard <ArrowRight className="w-5 h-5" />
+                  </Link>
+                  <Link to="/symptom-checker" className="inline-flex items-center gap-2 bg-white text-slate-700 border border-slate-300 px-6 py-3 rounded-lg font-semibold hover:bg-slate-50 transition-colors shadow-sm">
+                    Check Symptoms
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link to="/symptom-checker" className="inline-flex items-center gap-2 bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors shadow-sm">
+                    Check Symptoms <ArrowRight className="w-5 h-5" />
+                  </Link>
+                  <Link to="/login" className="inline-flex items-center gap-2 bg-white text-slate-700 border border-slate-300 px-6 py-3 rounded-lg font-semibold hover:bg-slate-50 transition-colors shadow-sm">
+                    Log In
+                  </Link>
+                </>
+              )
+            )}
           </div>
         </div>
 

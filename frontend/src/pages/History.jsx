@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { historyApi } from '../api/historyApi';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { format } from 'date-fns';
+
 import { FileClock, ChevronRight, Trash2 } from 'lucide-react';
 
 const History = () => {
@@ -18,7 +18,7 @@ const History = () => {
     setLoading(true);
     try {
       const data = await historyApi.getAnalyses(0, 100);
-      setAnalyses(data.analyses || []);
+      setAnalyses(Array.isArray(data) ? data : (data.analyses || []));
     } catch (error) {
       console.error(error);
     } finally {
@@ -58,13 +58,23 @@ const History = () => {
           {analyses.map((a) => (
             <div key={a.id} className="p-4 sm:p-6 hover:bg-slate-50 transition-colors flex justify-between items-center cursor-pointer group" onClick={() => navigate(`/analysis/${a.id}`)}>
               <div>
-                <p className="text-sm text-slate-500 mb-1">{format(new Date(a.created_at), 'PPP at p')}</p>
+                <p className="text-sm text-slate-500 mb-1">
+                  {new Intl.DateTimeFormat('en-IN', {
+                    timeZone: 'Asia/Kolkata',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                  }).format(new Date(a.created_at))}
+                </p>
                 <h3 className="text-lg font-semibold text-slate-800">
                   {a.predictions && a.predictions[0] ? a.predictions[0].condition : 'Analysis Record'}
                 </h3>
-                {a.safety_classification?.urgency_level && (
-                  <span className={`inline-block mt-2 text-xs font-bold px-2 py-0.5 rounded ${a.safety_classification.urgency_level === 'EMERGENCY' ? 'bg-red-100 text-red-700' : 'bg-slate-100 text-slate-600'}`}>
-                    {a.safety_classification.urgency_level}
+                {a.urgency?.level && (
+                  <span className={`inline-block mt-2 text-xs font-bold px-2 py-0.5 rounded ${a.urgency.level === 'urgent_attention' ? 'bg-red-100 text-red-700' : 'bg-slate-100 text-slate-600'}`}>
+                    {a.urgency.level === 'urgent_attention' ? 'EMERGENCY' : a.urgency.level.toUpperCase().replace('_', ' ')}
                   </span>
                 )}
               </div>

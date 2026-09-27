@@ -1,14 +1,17 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useAnalysis } from '../context/AnalysisContext';
 import { Activity, User as UserIcon, LogOut, FileClock, MessageSquare } from 'lucide-react';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
+  const { clearAnalysis } = useAnalysis();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
+    clearAnalysis();
     navigate('/');
   };
 
@@ -26,6 +29,11 @@ const Navbar = () => {
             {user ? (
               <>
                 <Link to="/symptom-checker" className="text-sm font-medium text-slate-600 hover:text-teal-600">Check Symptoms</Link>
+                <Link to="/pain-assessment" className="text-sm font-medium text-slate-600 hover:text-teal-600">Pain Assessment</Link>
+                <Link to="/menstruation" className="text-sm font-medium text-slate-600 hover:text-teal-600">Menstruation</Link>
+                <Link to="/mood" className="text-sm font-medium text-slate-600 hover:text-teal-600">Mood</Link>
+                <Link to="/reports" className="text-sm font-medium text-slate-600 hover:text-teal-600">Reports</Link>
+                <Link to="/consultation" className="text-sm font-medium text-slate-600 hover:text-teal-600">Telemedicine</Link>
                 <Link to="/history" className="text-sm font-medium text-slate-600 hover:text-teal-600 flex items-center gap-1"><FileClock className="w-4 h-4"/> History</Link>
                 <Link to="/chat-history" className="text-sm font-medium text-slate-600 hover:text-teal-600 flex items-center gap-1"><MessageSquare className="w-4 h-4"/> Chats</Link>
                 <div className="border-l border-slate-300 h-6 mx-2"></div>
@@ -39,6 +47,12 @@ const Navbar = () => {
               </>
             ) : (
               <>
+                <Link to="/symptom-checker" className="text-sm font-medium text-slate-600 hover:text-teal-600 mr-2">Check Symptoms</Link>
+                <Link to="/pain-assessment" className="text-sm font-medium text-slate-600 hover:text-teal-600 mr-2">Pain</Link>
+                <Link to="/menstruation" className="text-sm font-medium text-slate-600 hover:text-teal-600 mr-2">Menstruation</Link>
+                <Link to="/mood" className="text-sm font-medium text-slate-600 hover:text-teal-600 mr-2">Mood</Link>
+                <Link to="/reports" className="text-sm font-medium text-slate-600 hover:text-teal-600 mr-2">Reports</Link>
+                <Link to="/consultation" className="text-sm font-medium text-slate-600 hover:text-teal-600 mr-2">Telemedicine</Link>
                 <Link to="/login" className="text-sm font-medium text-slate-600 hover:text-teal-600">Log in</Link>
                 <Link to="/register" className="inline-flex items-center justify-center rounded-md text-sm font-medium bg-teal-600 text-white hover:bg-teal-700 h-9 px-4 py-2 transition-colors">
                   Sign up

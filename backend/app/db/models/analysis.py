@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import String, DateTime, ForeignKey, Text
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -10,7 +10,7 @@ class Analysis(Base):
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc))
     
     # Input
     input_text: Mapped[str] = mapped_column(Text, nullable=True)
@@ -27,5 +27,7 @@ class Analysis(Base):
     disclaimer: Mapped[str] = mapped_column(Text, nullable=False)
     
     analysis_source: Mapped[str] = mapped_column(String(50), nullable=True) # e.g. "predict", "analyze", "chat"
+    
+    demographics: Mapped[dict] = mapped_column(JSONB, nullable=True)
 
     user = relationship("User", back_populates="analyses")

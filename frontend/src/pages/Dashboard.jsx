@@ -33,9 +33,24 @@ const Dashboard = () => {
           <h1 className="text-3xl font-bold text-slate-900">Welcome, {user?.full_name || 'User'}!</h1>
           <p className="text-slate-600 mt-1">What would you like to do today?</p>
         </div>
-        <div className="mt-4 md:mt-0">
+        <div className="mt-4 md:mt-0 flex flex-wrap gap-3">
           <Link to="/symptom-checker" className="inline-flex items-center gap-2 bg-teal-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-teal-700 transition-colors shadow-sm">
-            <PlusCircle className="w-5 h-5" /> New Symptom Check
+            <PlusCircle className="w-5 h-5" /> Symptom Check
+          </Link>
+          <Link to="/pain-assessment" className="inline-flex items-center gap-2 bg-white text-teal-700 border-2 border-teal-600 px-5 py-2.5 rounded-lg font-medium hover:bg-teal-50 transition-colors shadow-sm">
+            <PlusCircle className="w-5 h-5" /> Pain Assessment
+          </Link>
+          <Link to="/menstruation" className="inline-flex items-center gap-2 bg-white text-pink-600 border-2 border-pink-500 px-5 py-2.5 rounded-lg font-medium hover:bg-pink-50 transition-colors shadow-sm">
+            <PlusCircle className="w-5 h-5" /> Menstruation Tracking
+          </Link>
+          <Link to="/mood" className="inline-flex items-center gap-2 bg-white text-indigo-600 border-2 border-indigo-500 px-5 py-2.5 rounded-lg font-medium hover:bg-indigo-50 transition-colors shadow-sm">
+            <PlusCircle className="w-5 h-5" /> Mood Tracking
+          </Link>
+          <Link to="/reports" className="inline-flex items-center gap-2 bg-white text-emerald-600 border-2 border-emerald-500 px-5 py-2.5 rounded-lg font-medium hover:bg-emerald-50 transition-colors shadow-sm">
+            <PlusCircle className="w-5 h-5" /> Medical Reports
+          </Link>
+          <Link to="/consultation" className="inline-flex items-center gap-2 bg-white text-blue-600 border-2 border-blue-500 px-5 py-2.5 rounded-lg font-medium hover:bg-blue-50 transition-colors shadow-sm">
+            <PlusCircle className="w-5 h-5" /> Telemedicine
           </Link>
         </div>
       </div>

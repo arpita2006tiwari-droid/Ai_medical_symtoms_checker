@@ -12,6 +12,11 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import SymptomChecker from './pages/SymptomChecker';
+import PainAssessment from './pages/PainAssessment';
+import MenstruationTracking from './pages/MenstruationTracking';
+import MoodTracking from './pages/MoodTracking';
+import DoctorConsultation from './pages/DoctorConsultation';
+import MedicalReports from './pages/MedicalReports';
 import AnalysisResult from './pages/AnalysisResult';
 import ChatAssistant from './pages/ChatAssistant';
 import History from './pages/History';
@@ -32,12 +37,18 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 
+                <Route path="/symptom-checker" element={<SymptomChecker />} />
+                <Route path="/pain-assessment" element={<PainAssessment />} />
+                <Route path="/menstruation" element={<MenstruationTracking />} />
+                <Route path="/mood" element={<MoodTracking />} />
+                <Route path="/consultation" element={<DoctorConsultation />} />
+                <Route path="/reports" element={<MedicalReports />} />
+                <Route path="/analysis-result" element={<AnalysisResult />} />
+                <Route path="/analysis/:id" element={<AnalysisResult />} />
+                <Route path="/chat-assistant" element={<ChatAssistant />} />
+
                 {/* Protected Routes */}
                 <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                <Route path="/symptom-checker" element={<ProtectedRoute><SymptomChecker /></ProtectedRoute>} />
-                <Route path="/analysis-result" element={<ProtectedRoute><AnalysisResult /></ProtectedRoute>} />
-                <Route path="/analysis/:id" element={<ProtectedRoute><AnalysisResult /></ProtectedRoute>} />
-                <Route path="/chat-assistant" element={<ProtectedRoute><ChatAssistant /></ProtectedRoute>} />
                 <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
                 <Route path="/chat-history" element={<ProtectedRoute><ChatHistory /></ProtectedRoute>} />
                 <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />

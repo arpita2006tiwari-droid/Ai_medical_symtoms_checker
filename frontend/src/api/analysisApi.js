@@ -6,13 +6,18 @@ export const analysisApi = {
     return response.data;
   },
 
-  predict: async (symptoms) => {
-    const response = await api.post('/api/predict', { symptoms });
+  predict: async (symptoms, demographics = {}) => {
+    const response = await api.post('/api/predict', { symptoms, ...demographics });
     return response.data;
   },
 
-  analyzeText: async (text) => {
-    const response = await api.post('/api/analyze', { text });
+  analyzeText: async (text, demographics = {}) => {
+    const response = await api.post('/api/analyze', { text, ...demographics });
+    return response.data;
+  },
+
+  getModelMetadata: async () => {
+    const response = await api.get('/api/model-metadata');
     return response.data;
   }
 };

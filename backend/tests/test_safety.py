@@ -86,7 +86,7 @@ def test_safety_ml_independence():
     """Test 8 — ML independence and backward compatibility"""
     response = client.post(
         "/api/predict",
-        json={"symptoms": ["high fever", "cough", "headache"]}
+        json={"symptoms": ["fatigue", "cough", "headache"]}
     )
     assert response.status_code == 200
     data = response.json()

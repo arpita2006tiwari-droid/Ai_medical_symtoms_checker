@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { historyApi } from '../api/historyApi';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { format } from 'date-fns';
+
 import { MessageSquare, ChevronRight, Trash2 } from 'lucide-react';
 
 const ChatHistory = () => {
@@ -18,7 +18,7 @@ const ChatHistory = () => {
     setLoading(true);
     try {
       const data = await historyApi.getConversations(0, 100);
-      setConversations(data.conversations || []);
+      setConversations(Array.isArray(data) ? data : (data.conversations || []));
     } catch (error) {
       console.error(error);
     } finally {
@@ -58,7 +58,17 @@ const ChatHistory = () => {
           {conversations.map((c) => (
             <div key={c.id} className="p-4 sm:p-6 hover:bg-slate-50 transition-colors flex justify-between items-center cursor-pointer group" onClick={() => navigate(`/chat-assistant`, { state: { conversationId: c.id } })}>
               <div>
-                <p className="text-sm text-slate-500 mb-1">{format(new Date(c.created_at), 'PPP at p')}</p>
+                <p className="text-sm text-slate-500 mb-1">
+                  {new Intl.DateTimeFormat('en-IN', {
+                    timeZone: 'Asia/Kolkata',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                  }).format(new Date(c.created_at))}
+                </p>
                 <h3 className="text-lg font-semibold text-slate-800 line-clamp-1">
                   {c.title || 'Conversation'}
                 </h3>

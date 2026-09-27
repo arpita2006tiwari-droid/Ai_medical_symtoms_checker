@@ -30,7 +30,8 @@ def chat_endpoint(request: ChatRequest, db: Session = Depends(get_db), current_u
         
     # Run the existing, unified deterministic backend analysis pipeline
     # We pass db and current_user to save the Analysis automatically via _build_prediction_response
-    prediction_response = _build_prediction_response(extracted, {"message": request.message}, db, current_user, "chat")
+    demographics = {"age": request.age, "age_unit": request.age_unit, "gender": request.gender, "patient_type": request.patient_type} if request.age or request.gender or request.patient_type else None
+    prediction_response = _build_prediction_response(extracted, {"message": request.message}, db, current_user, "chat", demographics)
     
     # Generate natural language
     ai_text = llm_service.generate_response(request.message, prediction_response)

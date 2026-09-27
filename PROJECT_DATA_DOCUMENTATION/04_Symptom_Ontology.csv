@@ -1,0 +1,74 @@
+Canonical_Symptom,Category,Synonyms,Source
+migraine,Neurological,"migraine, migraines",Phase 7 Expansion
+headache,Neurological,"headache, headaches, head pain, pain in my head, head hurts",Phase 7 Expansion
+vertigo,Neurological,vertigo,Phase 7 Expansion
+dizziness,Neurological,"dizziness, dizzy, lightheaded, lightheadedness",Phase 7 Expansion
+seizures,Neurological,"seizures, seizure, convulsions, fit",Phase 7 Expansion
+numbness,Neurological,"numbness, numb",Phase 7 Expansion
+tingling,Neurological,"tingling, pins and needles",Phase 7 Expansion
+tremors,Neurological,"tremors, tremor, shaking",Phase 7 Expansion
+weakness,Neurological,"weakness, weak, loss of strength",Phase 7 Expansion
+confusion,Neurological,"confusion, confused, disoriented",Phase 7 Expansion
+chest pain,Cardiovascular,"chest pain, pain in chest, chest hurts",Phase 7 Expansion
+palpitations,Cardiovascular,"palpitations, heart racing, heart pounding",Phase 7 Expansion
+fainting,Cardiovascular,"fainting, faint, passed out, passing out, syncope",Phase 7 Expansion
+swelling,Cardiovascular,"swelling, swollen, edema",Phase 7 Expansion
+irregular heartbeat,Cardiovascular,"irregular heartbeat, skipped beat, arrhythmia",Phase 7 Expansion
+cough,Respiratory,"cough, coughing",Phase 7 Expansion
+wheezing,Respiratory,"wheezing, wheeze",Phase 7 Expansion
+shortness of breath,Respiratory,"shortness of breath, breathlessness, out of breath, trouble breathing, hard to breathe",Phase 7 Expansion
+sputum,Respiratory,"sputum, phlegm, coughing up mucus",Phase 7 Expansion
+chest tightness,Respiratory,"chest tightness, tight chest",Phase 7 Expansion
+abdominal pain,Gastrointestinal,"abdominal pain, abdomen pain",Phase 7 Expansion
+stomach pain,Gastrointestinal,"stomach ache, stomach pain, belly pain, stomach hurts, tummy ache",Phase 7 Expansion
+nausea,Gastrointestinal,"nausea, nauseous, feel sick to my stomach",Phase 7 Expansion
+vomiting,Gastrointestinal,"vomiting, vomit, throwing up, puking",Phase 7 Expansion
+diarrhea,Gastrointestinal,"diarrhea, diarrhoea, loose stools, the runs",Phase 7 Expansion
+constipation,Gastrointestinal,"constipation, constipated, can't poop",Phase 7 Expansion
+bloating,Gastrointestinal,"bloating, bloated",Phase 7 Expansion
+heartburn,Gastrointestinal,"heartburn, acid reflux",Phase 7 Expansion
+jaundice,Gastrointestinal,"jaundice, yellow skin, yellow eyes",Phase 7 Expansion
+earache,ENT,"earache, ear ache, ear pain, pain in my ear, ears hurt",Phase 7 Expansion
+ear discharge,ENT,"ear discharge, fluid from ear",Phase 7 Expansion
+hearing changes,ENT,"hearing changes, hearing loss, trouble hearing, deafness",Phase 7 Expansion
+sore throat,ENT,"sore throat, throat pain, throat hurts, scratchy throat",Phase 7 Expansion
+sinus pain,ENT,"sinus pain, sinus pressure",Phase 7 Expansion
+vision changes,Ophthalmology,"vision changes, blurry vision, blurred vision, trouble seeing",Phase 7 Expansion
+eye pain,Ophthalmology,"eye pain, eyes hurt, pain in eye",Phase 7 Expansion
+rash,Dermatology,"rash, skin rash",Phase 7 Expansion
+itching,Dermatology,"itching, itchy, itchiness",Phase 7 Expansion
+hives,Dermatology,"hives, welts",Phase 7 Expansion
+acne,Dermatology,"acne, pimples, breakout",Phase 7 Expansion
+skin discoloration,Dermatology,"skin discoloration, discolored skin, patchy skin",Phase 7 Expansion
+hair loss,Dermatology,"hair loss, losing hair, bald patches",Phase 7 Expansion
+back pain,Musculoskeletal,"back pain, backache, back hurts, lower back pain",Phase 7 Expansion
+neck pain,Musculoskeletal,"neck pain, neck ache, neck hurts, stiff neck",Phase 7 Expansion
+joint pain,Musculoskeletal,"joint pain, joints hurt, achy joints",Phase 7 Expansion
+muscle pain,Musculoskeletal,"muscle pain, body aches, muscle ache, muscles hurt",Phase 7 Expansion
+stiffness,Musculoskeletal,"stiffness, stiff",Phase 7 Expansion
+cramps,Musculoskeletal,"cramps, muscle cramps, cramping",Phase 7 Expansion
+painful urination,Urinary,"painful urination, burning when peeing, pain when peeing, dysuria",Phase 7 Expansion
+urinary frequency,Urinary,"urinary frequency, peeing a lot, frequent urination",Phase 7 Expansion
+urinary urgency,Urinary,"urinary urgency, urgent need to pee",Phase 7 Expansion
+blood in urine,Urinary,"blood in urine, pink urine, hematuria",Phase 7 Expansion
+flank pain,Urinary,"flank pain, kidney pain, side pain",Phase 7 Expansion
+pelvic pain,Reproductive,"pelvic pain, pain in pelvis",Phase 7 Expansion
+menstrual pain,Reproductive,"menstrual pain, period cramps, menstrual cramps",Phase 7 Expansion
+abnormal bleeding,Reproductive,"abnormal bleeding, spotting, irregular bleeding",Phase 7 Expansion
+vaginal discharge,Reproductive,"vaginal discharge, unusual discharge",Phase 7 Expansion
+excessive thirst,Endocrine,"excessive thirst, always thirsty, very thirsty, polydipsia",Phase 7 Expansion
+excessive hunger,Endocrine,"excessive hunger, always hungry, polyphagia",Phase 7 Expansion
+heat intolerance,Endocrine,"heat intolerance, can't stand the heat, always hot",Phase 7 Expansion
+cold intolerance,Endocrine,"cold intolerance, always cold",Phase 7 Expansion
+unexplained weight changes,Endocrine,"unexplained weight changes, weight loss, weight gain, lost weight, gained weight",Phase 7 Expansion
+fever,General,"fever, high fever, mild fever, running a temperature, high temp",Phase 7 Expansion
+chills,General,"chills, shivering",Phase 7 Expansion
+fatigue,General,"fatigue, tiredness, exhausted, tired, exhaustion",Phase 7 Expansion
+malaise,General,"malaise, feel unwell, feeling sick, feel terrible",Phase 7 Expansion
+night sweats,General,"night sweats, sweating at night",Phase 7 Expansion
+appetite changes,General,"appetite changes, loss of appetite, not hungry, increased appetite",Phase 7 Expansion
+anxiety,Mental,"anxiety, anxious, nervousness, worry, panic",Phase 7 Expansion
+depression,Mental,"depression, depressed, feeling down, hopeless",Phase 7 Expansion
+mood swings,Mental,mood swings,Phase 7 Expansion
+irritability,Mental,"irritability, irritable, easily annoyed",Phase 7 Expansion
+insomnia,Mental,"insomnia, can't sleep, trouble sleeping, sleeplessness",Phase 7 Expansion
