@@ -19,15 +19,6 @@ def chat_endpoint(request: ChatRequest, db: Session = Depends(get_db), current_u
     """
     extracted = nlp_service.extract_symptoms(request.message)
     
-    if not extracted:
-        # We can still return a fallback saying we didn't understand the symptoms.
-        # But we must fulfill the ChatResponse schema which requires PredictionResponse fields.
-        # It's safer to raise 422 if no symptoms, as the model needs them to predict.
-        raise HTTPException(
-            status_code=422,
-            detail="No recognized symptoms found in the text. Please provide valid symptoms."
-        )
-        
     # Run the existing, unified deterministic backend analysis pipeline
     # We pass db and current_user to save the Analysis automatically via _build_prediction_response
     demographics = {"age": request.age, "age_unit": request.age_unit, "gender": request.gender, "patient_type": request.patient_type} if request.age or request.gender or request.patient_type else None

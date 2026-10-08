@@ -179,5 +179,20 @@
       "You have a high or persistent fever.",
       "You experience unexplained or severe weight loss."
     ]
+  },
+  "Anxiety": {
+    "recommended_tips": [
+      "Practice deep breathing or relaxation techniques.",
+      "Maintain a regular sleep schedule.",
+      "Engage in regular physical activity.",
+      "Reduce known triggers such as excess caffeine or stress.",
+      "Talk to trusted friends or family members."
+    ],
+    "when_to_seek_care": [
+      "Symptoms persist or significantly interfere with daily life.",
+      "You experience severe panic attacks.",
+      "You have thoughts of self-harm or suicide.",
+      "Physical symptoms like chest pain are concerning."
+    ]
   }
 }

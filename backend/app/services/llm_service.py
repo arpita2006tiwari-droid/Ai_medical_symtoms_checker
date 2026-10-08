@@ -18,7 +18,7 @@ class LLMService:
                 print(f"Failed to initialize Gemini client: {e}")
                 self.client = None
 
-    def get_fallback_response(self, structured_context: PredictionResponse) -> str:
+    def get_fallback_response(self, structured_context: PredictionResponse, user_message: str = "") -> str:
         """
         Deterministic fallback if LLM is unavailable or fails.
         """
@@ -27,15 +27,33 @@ class LLMService:
         else:
             base_msg = "I'm currently unable to process natural language generation. "
             
-        base_msg += "Based on the symptoms provided, the system identified preliminary information. "
-        
-        if structured_context.urgency and structured_context.urgency.level == "urgent_attention":
-            base_msg += "IMPORTANT: " + structured_context.urgency.message + " "
-            
-        if structured_context.specialist_recommendation:
-            base_msg += f"A {structured_context.specialist_recommendation.specialist} may be an appropriate starting point. "
-            
-        base_msg += "Please note that this information is not a medical diagnosis."
+        from app.services.medical_info_service import medical_info_service
+        lower_msg = user_message.lower()
+        matched_condition = None
+        for condition in medical_info_service._recommendations.keys():
+            if condition.lower() in lower_msg:
+                matched_condition = condition
+                break
+
+        if matched_condition:
+            recs = medical_info_service.get_recommendations(matched_condition)
+            base_msg += f"\n\nHere is some general self-care guidance for {matched_condition}:\n"
+            for tip in recs.get("recommended_tips", []):
+                base_msg += f"- {tip}\n"
+            base_msg += "\nWhen to seek medical care:\n"
+            for tip in recs.get("when_to_seek_care", []):
+                base_msg += f"- {tip}\n"
+        else:
+            if structured_context and structured_context.predictions:
+                base_msg += "Based on the symptoms provided, the system identified preliminary information. "
+                
+                if structured_context.urgency and structured_context.urgency.level == "urgent_attention":
+                    base_msg += "IMPORTANT: " + structured_context.urgency.message + " "
+                    
+                if structured_context.specialist_recommendation:
+                    base_msg += f"A {structured_context.specialist_recommendation.specialist} may be an appropriate starting point. "
+                
+        base_msg += "\n\nPlease note that this information is not a medical diagnosis."
         return base_msg
 
     def generate_response(self, user_message: str, structured_context: PredictionResponse) -> str:
@@ -43,7 +61,7 @@ class LLMService:
         Generates a conversational response strictly summarizing the backend structured context.
         """
         if not self.client:
-            return self.get_fallback_response(structured_context)
+            return self.get_fallback_response(structured_context, user_message)
             
         try:
             # We dump the structured_context to a JSON string, excluding raw input dict to save tokens
@@ -64,11 +82,11 @@ class LLMService:
             if response and response.text:
                 return response.text.strip()
                 
-            return self.get_fallback_response(structured_context)
+            return self.get_fallback_response(structured_context, user_message)
             
         except Exception as e:
             print(f"Gemini API generation error: {e}")
-            return self.get_fallback_response(structured_context)
+            return self.get_fallback_response(structured_context, user_message)
 
     def get_image_observations(self, image_bytes: bytes, mime_type: str) -> str:
         """
