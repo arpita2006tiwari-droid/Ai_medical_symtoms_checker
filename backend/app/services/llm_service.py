@@ -56,9 +56,9 @@ class LLMService:
         base_msg += "\n\nPlease note that this information is not a medical diagnosis."
         return base_msg
 
-    def generate_response(self, user_message: str, structured_context: PredictionResponse) -> str:
+    def generate_response(self, user_message: str, structured_context: PredictionResponse, conversation_history: list = None, patient_context: str = "") -> str:
         """
-        Generates a conversational response strictly summarizing the backend structured context.
+        Generates a conversational response strictly summarizing the backend structured context and relevant history.
         """
         if not self.client:
             return self.get_fallback_response(structured_context, user_message)
@@ -68,7 +68,17 @@ class LLMService:
             context_dict = structured_context.model_dump(exclude={'input', 'success'})
             context_json = json.dumps(context_dict, indent=2)
             
-            prompt = f"{MEDICAL_ASSISTANT_SYSTEM_PROMPT}\n\nSTRUCTURED CONTEXT:\n```json\n{context_json}\n```\n\nUSER MESSAGE:\n{user_message}"
+            prompt = f"{MEDICAL_ASSISTANT_SYSTEM_PROMPT}\n\nCURRENT SYMPTOM ANALYSIS CONTEXT:\n```json\n{context_json}\n```\n\n"
+            
+            if patient_context:
+                prompt += f"RELEVANT PATIENT HISTORY:\n{patient_context}\n\n"
+                
+            if conversation_history:
+                prompt += "PREVIOUS CONVERSATION HISTORY:\n"
+                for msg in conversation_history:
+                    prompt += f"{msg['role'].upper()}: {msg['content']}\n\n"
+                    
+            prompt += f"USER MESSAGE:\n{user_message}"
             
             response = self.client.models.generate_content(
                 model=self.model_name,

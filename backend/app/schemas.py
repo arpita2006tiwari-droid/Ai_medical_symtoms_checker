@@ -162,6 +162,7 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(PredictionResponse):
     response: str = Field(..., description="Natural language conversational response from the LLM")
+    conversation_id: Optional[str] = Field(default=None, description="ID of the conversation to allow continuing the chat")
 
 class HealthResponse(BaseModel):
     status: str
