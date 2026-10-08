@@ -1,4 +1,5 @@
 import os
+import json
 import pandas as pd
 from app.config import settings
 from app.utils.paths import get_project_root
@@ -8,6 +9,7 @@ class MedicalInfoService:
         self._descriptions: dict[str, str] = {}
         self._precautions: dict[str, list[str]] = {}
         self._severities: dict[str, int] = {}
+        self._recommendations: dict[str, dict] = {}
         self.is_loaded = False
 
     def load_data(self):
@@ -57,6 +59,15 @@ class MedicalInfoService:
             except Exception as e:
                 print(f"Warning: Failed to load severities from {sev_path}: {e}")
 
+        # Load Recommendations
+        rec_path = os.path.join(project_root, "backend/app/data/recommendations.json")
+        if os.path.exists(rec_path):
+            try:
+                with open(rec_path, 'r', encoding='utf-8') as f:
+                    self._recommendations = json.load(f)
+            except Exception as e:
+                print(f"Warning: Failed to load recommendations from {rec_path}: {e}")
+
         self.is_loaded = True
 
     def get_description(self, condition: str) -> str | None:
@@ -70,6 +81,31 @@ class MedicalInfoService:
     def get_severity(self, symptom: str) -> int | None:
         """Returns the integer severity weight for a recognized symptom, or None if not found."""
         return self._severities.get(symptom.strip().replace('_', ' ').lower())
+
+    def get_recommendations(self, condition: str) -> dict:
+        """Returns the recommended tips and when to seek care for a given condition, or a safe generic fallback."""
+        condition_key = condition.strip()
+        
+        # Look for case-insensitive match
+        for key, recs in self._recommendations.items():
+            if key.lower() == condition_key.lower():
+                return recs
+                
+        # Generic fallback
+        return {
+            "recommended_tips": [
+                "Stay hydrated.",
+                "Get adequate rest.",
+                "Monitor your symptoms.",
+                "Avoid activities or factors that appear to worsen your symptoms.",
+                "Consider consulting a healthcare professional if symptoms persist or worsen."
+            ],
+            "when_to_seek_care": [
+                "Symptoms are severe or rapidly worsening.",
+                "Symptoms persist or repeatedly return.",
+                "New or concerning symptoms develop."
+            ]
+        }
 
 # Singleton instance
 medical_info_service = MedicalInfoService()

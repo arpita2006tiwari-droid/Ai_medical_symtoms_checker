@@ -131,6 +131,31 @@ const AnalysisResult = () => {
                       </ul>
                     </div>
                   )}
+                  {pred.recommended_tips?.length > 0 && (
+                    <div className="mt-4 pt-4 border-t border-slate-100">
+                      <h5 className="font-semibold text-teal-800 mb-2">Recommended Tips & Self-Care</h5>
+                      <ul className="space-y-1 text-sm text-slate-600">
+                        {pred.recommended_tips.map((tip, idx) => (
+                          <li key={idx} className="flex gap-2 items-start">
+                            <CheckCircle className="w-4 h-4 text-teal-500 flex-shrink-0 mt-0.5" />
+                            <span>{tip}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {pred.when_to_seek_care?.length > 0 && (
+                    <div className="mt-4 p-4 bg-orange-50 rounded-lg border border-orange-100">
+                      <h5 className="font-semibold text-orange-800 mb-2 flex items-center gap-2">
+                        <AlertTriangle className="w-4 h-4" /> When to Seek Medical Care
+                      </h5>
+                      <ul className="list-disc pl-5 space-y-1 text-sm text-orange-700">
+                        {pred.when_to_seek_care.map((tip, idx) => (
+                          <li key={idx}>{tip}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

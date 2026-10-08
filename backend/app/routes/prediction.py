@@ -77,12 +77,15 @@ def _build_prediction_response(symptoms_list: list[str], input_dict: dict, db: S
                 condition = pred["condition"]
                 desc = medical_info_service.get_description(condition)
                 precs = medical_info_service.get_precautions(condition)
+                recs = medical_info_service.get_recommendations(condition)
                 
                 enriched_predictions.append({
                     "condition": condition,
                     "model_probability": pred["model_probability"],
                     "description": desc,
-                    "precautions": precs
+                    "precautions": precs,
+                    "recommended_tips": recs.get("recommended_tips", []),
+                    "when_to_seek_care": recs.get("when_to_seek_care", [])
                 })
                 
             # Get severities for recognized symptoms

@@ -109,6 +109,8 @@ class PredictionItem(BaseModel):
     model_probability: float
     description: Optional[str] = None
     precautions: List[str] = []
+    recommended_tips: List[str] = []
+    when_to_seek_care: List[str] = []
 
 class SafetyRuleMatch(BaseModel):
     rule_id: str
@@ -183,6 +185,10 @@ class UserResponse(BaseModel):
     email: EmailStr
     full_name: Optional[str] = None
     is_active: bool
+    age: Optional[int] = None
+    age_unit: Optional[str] = None
+    gender: Optional[str] = None
+    patient_type: Optional[str] = None
     created_at: datetime
     updated_at: datetime
 
@@ -194,6 +200,13 @@ class UserResponse(BaseModel):
         if v and v.tzinfo is None:
             return v.replace(tzinfo=timezone.utc)
         return v
+
+class UserUpdate(BaseModel):
+    full_name: Optional[str] = None
+    age: Optional[int] = None
+    age_unit: Optional[str] = None
+    gender: Optional[str] = None
+    patient_type: Optional[str] = None
 
 class LoginRequest(BaseModel):
     email: EmailStr

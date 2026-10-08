@@ -1,0 +1,183 @@
+{
+  "Migraine": {
+    "recommended_tips": [
+      "Rest in a quiet, dark room.",
+      "Stay hydrated.",
+      "Try a cool compress on the forehead.",
+      "Avoid bright lights, loud sounds, and strong smells.",
+      "Maintain regular sleep and meal patterns.",
+      "Track possible triggers such as stress, lack of sleep, or skipped meals."
+    ],
+    "when_to_seek_care": [
+      "Headaches become severe or worsen.",
+      "Headaches occur very frequently or persist.",
+      "New or unusual symptoms appear.",
+      "Concerning symptoms occur along with the headache."
+    ]
+  },
+  "Common Cold": {
+    "recommended_tips": [
+      "Get plenty of rest to help your body recover.",
+      "Drink warm fluids like tea or broth.",
+      "Use a humidifier or inhale steam to relieve congestion.",
+      "Gargle with warm salt water for a sore throat.",
+      "Practice good hygiene to avoid spreading the virus."
+    ],
+    "when_to_seek_care": [
+      "Symptoms last longer than 10 days without improvement.",
+      "You develop a high fever or severe symptoms.",
+      "You experience difficulty breathing or chest pain.",
+      "Symptoms worsen significantly after initially improving."
+    ]
+  },
+  "Allergy": {
+    "recommended_tips": [
+      "Identify and try to avoid known allergens.",
+      "Keep windows closed during high pollen seasons.",
+      "Use air purifiers in your home.",
+      "Wash your face and hands after being outdoors.",
+      "Keep your living space clean and dust-free."
+    ],
+    "when_to_seek_care": [
+      "You experience difficulty breathing or swelling in the face/throat.",
+      "Symptoms severely impact your daily activities or sleep.",
+      "Over-the-counter allergy relief is ineffective.",
+      "You develop a rash that spreads rapidly or is painful."
+    ]
+  },
+  "Gastroenteritis": {
+    "recommended_tips": [
+      "Stay hydrated by taking small, frequent sips of water or oral rehydration solutions.",
+      "Rest as much as possible.",
+      "Gradually reintroduce bland, easy-to-digest foods (like toast, rice, or bananas).",
+      "Avoid dairy, caffeine, alcohol, and spicy or fatty foods.",
+      "Wash your hands frequently to prevent spreading."
+    ],
+    "when_to_seek_care": [
+      "You are unable to keep any fluids down for 24 hours.",
+      "You show signs of severe dehydration (extreme thirst, dry mouth, little to no urination).",
+      "You experience severe or worsening abdominal pain.",
+      "You notice blood in your stool or vomit."
+    ]
+  },
+  "GERD": {
+    "recommended_tips": [
+      "Eat smaller, more frequent meals.",
+      "Avoid lying down immediately after eating.",
+      "Elevate the head of your bed if you experience symptoms at night.",
+      "Avoid known trigger foods like spicy, fatty, or acidic foods.",
+      "Wear loose-fitting clothing around your waist."
+    ],
+    "when_to_seek_care": [
+      "You experience severe or worsening chest pain.",
+      "You have difficulty swallowing or food feels stuck.",
+      "You notice unexplained weight loss.",
+      "Symptoms occur very frequently despite lifestyle changes."
+    ]
+  },
+  "Acne": {
+    "recommended_tips": [
+      "Wash your face gently twice a day with a mild cleanser.",
+      "Avoid scrubbing the skin or popping pimples.",
+      "Keep your hair clean and out of your face.",
+      "Use non-comedogenic (won't clog pores) skincare and makeup products.",
+      "Avoid excessive sun exposure."
+    ],
+    "when_to_seek_care": [
+      "Acne is severe or causes painful cysts/nodules.",
+      "You notice scarring or dark spots developing.",
+      "Over-the-counter products are ineffective after several weeks.",
+      "Acne significantly impacts your self-esteem or mental health."
+    ]
+  },
+  "Diabetes": {
+    "recommended_tips": [
+      "Maintain a balanced, nutritious diet.",
+      "Engage in regular, moderate physical activity.",
+      "Stay hydrated and avoid sugary drinks.",
+      "Keep a consistent daily routine for meals and sleep.",
+      "Monitor your feet for any cuts or sores."
+    ],
+    "when_to_seek_care": [
+      "You experience sudden blurred vision.",
+      "You feel unusually confused, dizzy, or faint.",
+      "You have a wound or sore that is slow to heal.",
+      "You experience extreme thirst or frequent urination that disrupts your day."
+    ]
+  },
+  "Hypertension": {
+    "recommended_tips": [
+      "Engage in regular physical activity.",
+      "Reduce sodium (salt) intake in your diet.",
+      "Practice stress-reduction techniques like deep breathing or meditation.",
+      "Maintain a healthy sleep schedule.",
+      "Limit consumption of processed and high-fat foods."
+    ],
+    "when_to_seek_care": [
+      "You experience a severe headache or chest pain.",
+      "You have difficulty breathing or experience irregular heartbeats.",
+      "You notice vision changes or confusion.",
+      "You experience unexplained dizziness or weakness."
+    ]
+  },
+  "Arthritis": {
+    "recommended_tips": [
+      "Engage in low-impact exercises like swimming or walking to maintain joint mobility.",
+      "Apply warm or cold compresses to affected joints.",
+      "Maintain a healthy weight to reduce stress on joints.",
+      "Practice gentle stretching daily.",
+      "Use assistive devices or ergonomic tools if needed to reduce joint strain."
+    ],
+    "when_to_seek_care": [
+      "Joint pain suddenly becomes severe.",
+      "A joint becomes noticeably swollen, red, or hot to the touch.",
+      "You experience a sudden inability to move a joint.",
+      "You develop a fever along with joint symptoms."
+    ]
+  },
+  "Urinary tract infection": {
+    "recommended_tips": [
+      "Drink plenty of water to help flush out bacteria.",
+      "Avoid irritating fluids like coffee, alcohol, or citrus juices.",
+      "Use a heating pad on your lower back or abdomen to ease discomfort.",
+      "Wear loose-fitting, breathable cotton clothing.",
+      "Maintain good personal hygiene."
+    ],
+    "when_to_seek_care": [
+      "You experience severe back or side pain.",
+      "You develop a fever or chills.",
+      "You notice blood in your urine.",
+      "Symptoms worsen or don't improve after a few days."
+    ]
+  },
+  "Chicken pox": {
+    "recommended_tips": [
+      "Rest and stay hydrated.",
+      "Avoid scratching the blisters to prevent infection.",
+      "Take cool or lukewarm baths with baking soda or oatmeal.",
+      "Wear loose, soft clothing to minimize irritation.",
+      "Keep fingernails short and clean."
+    ],
+    "when_to_seek_care": [
+      "The rash spreads to the eyes.",
+      "The rash becomes very red, warm, or tender (signs of secondary infection).",
+      "You experience dizziness, disorientation, or a stiff neck.",
+      "You have a severe cough or difficulty breathing."
+    ]
+  },
+  "Tuberculosis": {
+    "recommended_tips": [
+      "Ensure you get plenty of rest in a well-ventilated room.",
+      "Maintain a nutritious diet to support your immune system.",
+      "Practice strict hygiene and cover your mouth when coughing.",
+      "Avoid spending time in crowded, enclosed spaces.",
+      "Stay hydrated."
+    ],
+    "when_to_seek_care": [
+      "You cough up blood.",
+      "You experience severe chest pain or difficulty breathing.",
+      "You have a high or persistent fever.",
+      "You experience unexplained or severe weight loss."
+    ]
+  }
+}

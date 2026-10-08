@@ -4,6 +4,7 @@ import { analysisApi } from '../api/analysisApi';
 import { followupApi } from '../api/followupApi';
 import { imageApi } from '../api/imageApi';
 import { reportApi } from '../api/reportApi';
+import { authApi } from '../api/authApi';
 import { useAnalysis } from '../context/AnalysisContext';
 import { useAuth } from '../context/AuthContext';
 import ErrorMessage from '../components/ErrorMessage';
@@ -21,7 +22,7 @@ const getErrorMessage = (err, fallback) => {
 };
 
 const SymptomChecker = () => {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const [step, setStep] = useState('demographics'); // demographics -> input -> review -> followup -> analyze
   const [text, setText] = useState('');
   const [extractedSymptoms, setExtractedSymptoms] = useState([]);
@@ -42,6 +43,7 @@ const SymptomChecker = () => {
   const [age, setAge] = useState('');
   const [ageUnit, setAgeUnit] = useState('years');
   const [gender, setGender] = useState('');
+  const [isEditingDetails, setIsEditingDetails] = useState(true);
   const [followupState, setFollowupState] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(null);
   
@@ -70,6 +72,18 @@ const SymptomChecker = () => {
     fetchMetadata();
     fetchReports();
   }, []);
+
+  React.useEffect(() => {
+    if (user && (user.age || user.gender || user.patient_type)) {
+      if (user.patient_type) setPatientType(user.patient_type);
+      if (user.age) setAge(user.age);
+      if (user.age_unit) setAgeUnit(user.age_unit);
+      if (user.gender) setGender(user.gender);
+      setIsEditingDetails(false);
+    } else {
+      setIsEditingDetails(true);
+    }
+  }, [user]);
   
   const { setAnalysisResult } = useAnalysis();
   const navigate = useNavigate();
@@ -290,7 +304,35 @@ const SymptomChecker = () => {
           </div>
           <div className="space-y-6 max-w-lg mx-auto">
             
-            <div className="flex gap-4 mb-6">
+            {!isEditingDetails && user ? (
+              <div className="bg-slate-50 border border-slate-200 rounded-lg p-6">
+                <h3 className="font-bold text-lg text-slate-800 mb-4">Your Details</h3>
+                <div className="space-y-3 mb-6 text-slate-700">
+                  <div className="flex justify-between border-b border-slate-200 pb-2">
+                    <span className="font-semibold">Patient Type:</span>
+                    <span className="capitalize">{user.patient_type === 'newborn' ? 'Newborn / Infant' : 'Adult / Child (2+ yrs)'}</span>
+                  </div>
+                  <div className="flex justify-between border-b border-slate-200 pb-2">
+                    <span className="font-semibold">Age:</span>
+                    <span>{user.age ? `${user.age} ${user.age_unit}` : 'Not provided'}</span>
+                  </div>
+                  <div className="flex justify-between pb-2">
+                    <span className="font-semibold">Gender:</span>
+                    <span className="capitalize">{user.gender || 'Not provided'}</span>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <button onClick={() => setIsEditingDetails(true)} className="flex-1 py-3 px-4 rounded-lg text-slate-700 font-semibold bg-white border border-slate-300 hover:bg-slate-50 transition-colors">
+                    Edit Details
+                  </button>
+                  <button onClick={() => { setError(''); setStep('input'); }} className="flex-1 flex justify-center items-center gap-2 py-3 px-4 rounded-lg text-white font-semibold bg-teal-600 hover:bg-teal-700 transition-colors">
+                    Continue <ArrowRight className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="flex gap-4 mb-6">
               <button
                 onClick={() => { setPatientType('general'); setAgeUnit('years'); }}
                 className={`flex-1 py-3 px-4 rounded-lg border-2 font-semibold transition-colors ${patientType === 'general' ? 'border-teal-600 bg-teal-50 text-teal-700' : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}
@@ -375,12 +417,27 @@ const SymptomChecker = () => {
                 </button>
               )}
               <button
-                onClick={() => {
+                onClick={async () => {
                   if (patientType === 'newborn' && !age) {
                     setError('Age is required for newborns and infants.');
                     return;
                   }
                   setError('');
+                  
+                  if (user) {
+                    try {
+                      const updatedUser = await authApi.updateMe({
+                        patient_type: patientType,
+                        age: age ? parseInt(age) : null,
+                        age_unit: ageUnit,
+                        gender: gender || null
+                      });
+                      setUser(updatedUser);
+                    } catch (err) {
+                      console.error("Failed to save demographic data", err);
+                    }
+                  }
+                  
                   setStep('input');
                 }}
                 className={`${patientType === 'general' ? 'flex-1' : 'w-full'} flex justify-center items-center gap-2 py-3 px-4 rounded-lg text-white font-semibold bg-teal-600 hover:bg-teal-700 transition-colors`}
@@ -388,6 +445,8 @@ const SymptomChecker = () => {
                 {patientType === 'general' ? 'Save & Continue' : 'Continue to Symptoms'} <ArrowRight className="w-5 h-5" />
               </button>
             </div>
+            </>
+          )}
           </div>
         </div>
       )}
